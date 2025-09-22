@@ -1,6 +1,6 @@
-# ===============================
+# =======================================
 # Makefile for C and C++ projects
-# ===============================
+# =======================================
 
 # ===== Colors =====
 _GREY   = \033[1;30m
@@ -18,6 +18,7 @@ COMPILING = $(_BLUE)COMPILING[●]$(_NC)
 
 # ===== Project =====
 NAME = a.out
+
 SRCDIR = src
 INCDIR = include
 
@@ -46,6 +47,11 @@ CXXFLAGS_ASAN    = $(CCXXFLAGS) -g -O0 -fsanitize=address -fno-omit-frame-pointe
 
 DEPFLAGS = -MMD -MP
 
+# Link flags
+LDFLAGS_RELEASE  =
+LDFLAGS_DEBUG    =
+LDFLAGS_ASAN     = -fsanitize=address
+
 # ===== Source files =====
 SRCFILES = $(shell find $(SRCDIR) -type f \( -name "*.c" -o -name "*.cc" -o -name "*.cpp" \))
 INCDIRS  = $(shell find $(INCDIR) -type d)
@@ -72,16 +78,23 @@ all: release
 
 # ===== Build modes =====
 .PHONY: release debug asan
+
+release: pretty
 release: CFLAGS=$(CFLAGS_RELEASE)
 release: CXXFLAGS=$(CXXFLAGS_RELEASE)
+release: LDFLAGS=$(LDFLAGS_RELEASE)
 release: $(TARGET_RELEASE)
 
+debug: pretty
 debug: CFLAGS=$(CFLAGS_DEBUG)
 debug: CXXFLAGS=$(CXXFLAGS_DEBUG)
+debug: LDFLAGS=$(LDFLAGS_DEBUG)
 debug: $(TARGET_DEBUG)
 
+asan: pretty
 asan: CFLAGS=$(CFLAGS_ASAN)
 asan: CXXFLAGS=$(CXXFLAGS_ASAN)
+asan: LDFLAGS=$(LDFLAGS_ASAN)
 asan: $(TARGET_ASAN)
 
 # ===== Linking =====
@@ -90,7 +103,7 @@ $1: $2
 	@echo
 	@echo "$(_CYAN)Creating Executable $(_WHITE)$(_NC)"
 	@mkdir -p $$(@D)
-	@$(CXX) $(CXXFLAGS) -o $$@ $2
+	@$(CXX) $(CXXFLAGS) -o $$@ $2 $(LDFLAGS)
 	@echo "$(SUCCESS)\n$(_WHITE)Linked $$@"
 endef
 
@@ -149,13 +162,13 @@ re: fclean all
 # PRINT: print a header (MSG1) in blue, then print each token of MSG2 on its own grey line prefixed with " -> "
 # Args: $1 = header/title, $2 = space-separated list (or string) to print line-by-line
 define PRINT
-	MSG1=$$(echo "$1" | sed ':a;N;s/^\n*//;s/\n*$$//;ta'); \
-	MSG2=$$(echo "$2" | sed ':a;N;s/^\n*//;s/\n*$$//;ta'); \
-	printf "$(_BLUE)%s\n" "$$MSG1"; \
-	echo "$$MSG2" | tr ' ' '\n' | while IFS= read -r line; do \
-		[ -n "$$line" ] && printf "$(_GREY) -> $(_NC)%s\n" "$$line"; \
-	done; \
-	echo
+    MSG1=$$(echo "$1" | sed 's/^[[:space:]]*//;s/[[:space:]]*$$//'); \
+    MSG2=$$(echo "$2" | sed 's/^[[:space:]]*//;s/[[:space:]]*$$//'); \
+    printf "$(_BLUE)%s\n" "$$MSG1"; \
+    echo "$$MSG2" | tr ' ' '\n' | while IFS= read -r line; do \
+        [ -n "$$line" ] && printf "$(_GREY) -> $(_NC)%s\n" "$$line"; \
+    done; \
+    echo
 endef
 
 .PHONY: show
@@ -169,6 +182,7 @@ endef
 .PHONY: show_asan_flags
 .PHONY: show_includes
 .PHONY: show_include_flags
+.PHONY: show_link_flags
 
 show: show_src
 show: show_release_obj
@@ -180,6 +194,7 @@ show: show_debug_flags
 show: show_asan_flags
 show: show_includes
 show: show_include_flags
+show: show_link_flags
 
 show_src:
 	@$(call PRINT,"Source Files:","$(SRCFILES)")
@@ -214,6 +229,11 @@ show_includes:
 
 show_include_flags:
 	@$(call PRINT,"Include Flags:","$(IFLAGS)")
+
+show_link_flags:
+	@$(call PRINT,"Release Link Flags:","$(LDFLAGS_RELEASE)")
+	@$(call PRINT,"Debug Link Flags:","$(LDFLAGS_DEBUG)")
+	@$(call PRINT,"ASan Link Flags:","$(LDFLAGS_ASAN)")
 
 # ===== Beautify output =====
 .PHONY: pretty
