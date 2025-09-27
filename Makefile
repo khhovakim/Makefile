@@ -27,8 +27,8 @@ OBJDIR = obj
 BINDIR = bin
 
 # ===== Compiler =====
-CC = clang
-CXX = clang++
+CC  = gcc
+CXX = g++
 
 # ===== Flags =====
 FLAGS = -Wall -Wextra -Werror -pedantic-errors
@@ -42,8 +42,8 @@ CXXFLAGS_RELEASE = $(CCXXFLAGS) -O2 -DNDEBUG
 CFLAGS_DEBUG     = $(CCFLAGS)   -g -O0
 CXXFLAGS_DEBUG   = $(CCXXFLAGS) -g -O0
 
-CFLAGS_ASAN      = $(CCFLAGS)   -g -O0 -fsanitize=address -fno-omit-frame-pointer
-CXXFLAGS_ASAN    = $(CCXXFLAGS) -g -O0 -fsanitize=address -fno-omit-frame-pointer
+CFLAGS_ASAN      = $(CCFLAGS)   -g -O1 -fsanitize=address -fno-omit-frame-pointer
+CXXFLAGS_ASAN    = $(CCXXFLAGS) -g -O1 -fsanitize=address -fno-omit-frame-pointer
 
 DEPFLAGS = -MMD -MP
 
