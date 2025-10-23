@@ -26,10 +26,10 @@ This repository provides a **universal Makefile** for building C and C++ project
 ### Build Targets
 
 ```bash
-make            # Default → release build
-make release    # Optimized release build
-make debug      # Debug build with symbols
-make asan       # AddressSanitizer build
+make               # Default → release build
+make BUILD_TYPE=r  # Optimized release build
+make BUILD_TYPE=d  # Debug build with symbols
+make BUILD_TYPE=as # AddressSanitizer build
 ```
 
 ### Run the Program
@@ -55,28 +55,12 @@ Inspect details of the build configuration:
 ```bash
 make show                # Show everything
 make show_src            # Show source files
-make show_release_obj    # Show release object files
-make show_debug_obj      # Show debug object files
-make show_asan_obj       # Show ASan object files
+make show_obj            # Show ASan object files
 make show_compilers      # Show compilers
-make show_release_flags  # Show release flags
-make show_debug_flags    # Show debug flags
-make show_asan_flags     # Show ASan flags
+make show_flags          # Show release flags
 make show_includes       # Show include directories
 make show_include_flags  # Show include flags
 ```
-
----
-
-## 🐞 Debugging with Valgrind
-
-You can run your project under **Valgrind** using:
-
-```bash
-make valgrind
-```
-
-This runs the **debug build** with full memory leak checks enabled.
 
 ---
 
@@ -104,9 +88,8 @@ make pretty
 
 ## 📌 Requirements
 
-* **clang / clang++** (can be changed to gcc/g++)
+* **gcc/g++** (can be changed to clang/clang++ or cc/c++)
 * **GNU Make**
-* (Optional) **Valgrind** for memory debugging
 
 ---
 
@@ -117,7 +100,7 @@ make pretty
 make run
 
 # Build with ASan and run
-make asan && ./bin/asan/a.out
+make BUILD_TYPE=as && ./bin/ASan/a.out
 
 # Inspect all configuration
 make show
