@@ -10,10 +10,10 @@ This repository provides a **universal Makefile** for building C and C++ project
 * ✅ Multiple build modes:
 
   * **release** → optimized build with `-O2 -DNDEBUG`
-  * **debug** → debug-friendly build with `-g -O0`
-  * **asan** → build with **AddressSanitizer**
+  * **debug** → debug-friendly build with `-g3 -O0`
+  * **asan** → build with **AddressSanitizer**, `-g3 -O0`
 * ✅ Automatic object directory structure (`obj/`)
-* ✅ Separate binary outputs (`bin/release`, `bin/debug`, `bin/asan`)
+* ✅ Separate binary outputs (`bin/release`, `bin/debug`, `bin/ASan`)
 * ✅ Auto-dependency handling with `-MMD -MP`
 * ✅ Colored and formatted console output
 * ✅ `show` commands to inspect configuration (sources, objects, flags, includes)
