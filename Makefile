@@ -30,7 +30,7 @@ SUCCESS   = $(_GREEN)SUCCESS[✔]$(_NC)
 COMPILING = $(_BLUE)COMPILING[●]$(_NC)
 
 # ===== Project =====
-NAME = app
+NAME = a.out
 
 # ===== Directories =====
 SRCDIR      = src
