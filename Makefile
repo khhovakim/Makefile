@@ -42,13 +42,14 @@ BINDIR      = bin
 # ===== Compiler =====
 CC  = gcc
 CXX = g++
+AR  = ar rcs
 
 # ===== Flags =====
 FLAGS    = -Wall -Wextra -Werror -pedantic-errors
 CFLAGS   = -std=c11   $(FLAGS)
 CXXFLAGS = -std=c++17 $(FLAGS)
 DEPFLAGS = -MMD -MP
-LDFLAGS  = 
+LDFLAGS  =
 IFLAGS   = $(foreach dir,$(INCDIRS),-I$(dir))
 
 # ===== Source files =====
@@ -107,17 +108,17 @@ $(EXE) : $(OBJ)
 # ===== Compile rules =====
 $(OBJDIR)/%.o: %.c Makefile
 	@mkdir -p $(@D)
-	@echo "$(COMPILING) $(_WHITE)[$(CC)][$(TYPE)] $< → $@$(_NC)"
+	@echo "$(COMPILING) $(_WHITE)[$(_CYAN)$(CC)$(_WHITE)][$(_PURPLE)$(TYPE)$(_WHITE)] [$(_YELLOW)$<$(_WHITE)] → $(_GREEN)$@$(_NC)"
 	@$(CC) $(CFLAGS) $(DEPFLAGS) $(IFLAGS) -c $< -o $@
 
 $(OBJDIR)/%.o: %.cc Makefile
 	@mkdir -p $(@D)
-	@echo "$(COMPILING) $(_WHITE)[$(CXX)][$(TYPE)] $< → $@$(_NC)"
+	@echo "$(COMPILING) $(_WHITE)[$(_CYAN)$(CXX)$(_WHITE)][$(_PURPLE)$(TYPE)$(_WHITE)] [$(_YELLOW)$<$(_WHITE)] → $(_GREEN)$@$(_NC)"
 	@$(CXX) $(CXXFLAGS) $(DEPFLAGS) $(IFLAGS) -c $< -o $@
 
 $(OBJDIR)/%.o: %.cpp Makefile
 	@mkdir -p $(@D)
-	@echo "$(COMPILING) $(_WHITE)[$(CXX)][$(TYPE)] $< → $@$(_NC)"
+	@echo "$(COMPILING) $(_WHITE)[$(_CYAN)$(CXX)$(_WHITE)][$(_PURPLE)$(TYPE)$(_WHITE)] [$(_YELLOW)$<$(_WHITE)] → $(_GREEN)$@$(_NC)"
 	@$(CXX) $(CXXFLAGS) $(DEPFLAGS) $(IFLAGS) -c $< -o $@
 
 # ===== Auto-include dependency files =====
@@ -138,7 +139,7 @@ clean:
 .PHONY: fclean
 fclean: clean
 	@rm -rf $(BINDIR)
-	@echo "$(_RED)[x] Removed executables$(_NC)"
+	@echo "$(_RED)[x] Removed executable$(_NC)"
 
 .PHONY: re
 re: fclean all
