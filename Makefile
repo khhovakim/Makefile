@@ -28,14 +28,15 @@ _NC     = \033[0m
 
 SUCCESS   = $(_GREEN)SUCCESS[✔]$(_NC)
 COMPILING = $(_BLUE)COMPILING[●]$(_NC)
+WARNING   = $(_YELLOW)WARNING[⚠]$(_NC)
 
 # ===== Project =====
 NAME = a.out
 
 # ===== Directories =====
 SRCDIR      = src
-INCDIR      = include
-INCDIRS     = $(shell find $(INCDIR) -type d)
+INCDIR      = ./include
+LIBDIR      = 
 OBJDIR_ROOT = obj
 BINDIR      = bin
 
@@ -49,8 +50,8 @@ FLAGS    = -Wall -Wextra -Werror -pedantic-errors
 CFLAGS   = -std=c11   $(FLAGS)
 CXXFLAGS = -std=c++17 $(FLAGS)
 DEPFLAGS = -MMD -MP
-LDFLAGS  =
-IFLAGS   = $(foreach dir,$(INCDIRS),-I$(dir))
+LDFLAGS  = 
+IFLAGS   = -I$(INCDIR)
 
 # ===== Source files =====
 SRC =   main.cpp \
@@ -152,7 +153,6 @@ show: show_src
 show: show_obj
 show: show_compilers
 show: show_flags
-show: show_includes
 show: show_include_flags
 show: show_link_flags
 
@@ -173,10 +173,6 @@ show_compilers:
 show_flags:
 	@$(call PRINT,"Release CFlags:","$(CFLAGS)")
 	@$(call PRINT,"Release CXXFlags:","$(CXXFLAGS)")
-
-.PHONY: show_includes
-show_includes:
-	@$(call PRINT,"Include Directories:","$(INCDIRS)")
 
 .PHONY: show_include_flags
 show_include_flags:
