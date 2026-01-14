@@ -53,6 +53,8 @@ DEPFLAGS = -MMD -MP
 LDFLAGS  = 
 IFLAGS   = -I$(INCDIR)
 
+MAKEFLAGS += --no-print-directory
+
 # ===== Source files =====
 SRC =   main.cpp \
 		$(shell find $(SRCDIR) -type f -name "*.c") \
@@ -63,6 +65,8 @@ SRC =   main.cpp \
 # r/R   = Release;
 # d/D   = Debug;
 # as/AS = ASan;
+# make BUILD_TYPE=r/d/as
+# make -j[N] // -j$(nproc)
 
 BUILD_TYPE ?= r
 MODE := $(shell echo $(BUILD_TYPE) | tr '[:upper:]' '[:lower:]')
